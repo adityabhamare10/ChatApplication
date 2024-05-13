@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatApplication</string>
+    <string name="app_name">chatapplication</string>
     <string name="welcomeMsg">Welcome to my Chat App \nFeel Free to Meet new Friends!</string>
     <string name="ButtonName">Anonymous Login</string>
 </resources>

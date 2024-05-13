@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.hustler.chatapplication.ChatActivity;
 import com.hustler.chatapplication.R;
 import com.hustler.chatapplication.databinding.ItemCardBinding;
 import com.hustler.chatapplication.model.ChatGroup;
@@ -69,9 +70,9 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.GroupViewHol
 
                     ChatGroup clickedChatGroup = groupArrayList.get(position);
 
-//                    Intent i = new Intent(view.getContext(), ChatActivity.class);
-//                    i.putExtra("GROUP_NAME", clickedChatGroup.getGroupName());
-//                    view.getContext().startActivity(i);
+                    Intent i = new Intent(view.getContext(), ChatActivity.class);
+                    i.putExtra("GROUP_NAME", clickedChatGroup.getGroupName());
+                    view.getContext().startActivity(i);
 
 
 

@@ -16,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hustler.chatapplication.model.ChatGroup;
+import com.hustler.chatapplication.model.ChatMessage;
 import com.hustler.chatapplication.views.GroupsActivity;
 
 import java.util.ArrayList;
@@ -30,11 +31,18 @@ public class Repository {
 
     FirebaseDatabase database;
     DatabaseReference reference;
+    DatabaseReference groupReference;
+
+    MutableLiveData<List<ChatMessage>> messagesLiveData;
+
 
     public Repository(){
         this.chatGroupmutableLiveData = new MutableLiveData<>();
         database = FirebaseDatabase.getInstance();
         reference = database.getReference();
+
+        messagesLiveData = new MutableLiveData<>();
+
     }
 
 
@@ -65,7 +73,6 @@ public class Repository {
     }
 
 //    Getting Chat Groups available from Firebase realtime DB
-
     public MutableLiveData<List<ChatGroup>> getChatGroupMutableLiveData(){
 
         List<ChatGroup> groupsList = new ArrayList<>();
@@ -87,6 +94,56 @@ public class Repository {
             }
         });
         return chatGroupmutableLiveData;
+    }
+
+    public void createNewChatGroup(String groupName){
+        reference.child(groupName).setValue(groupName);
+
+    }
+
+    // Getting messages live data
+    public MutableLiveData<List<ChatMessage>> getMessagesLiveData(String groupName) {
+
+        groupReference = database.getReference().child(groupName);
+        List<ChatMessage> messageList = new ArrayList<>();
+
+        groupReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                messageList.clear();
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    ChatMessage message = dataSnapshot.getValue(ChatMessage.class);
+                    messageList.add(message);
+                }
+                messagesLiveData.postValue(messageList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        return messagesLiveData;
+    }
+
+
+
+    public void sendMessage(String messageText, String chatGroup){
+
+        DatabaseReference ref = database.getReference(chatGroup);
+
+        if (!messageText.trim().equals("")){
+            ChatMessage msg = new ChatMessage(
+                    FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                    messageText,
+                    System.currentTimeMillis()
+            );
+
+            String randomKey = ref.push().getKey();
+
+            ref.child(randomKey).setValue(msg);
+
+        }
     }
 
 }
