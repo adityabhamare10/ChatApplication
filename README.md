@@ -51,3 +51,7 @@ Please ensure that your contributions adhere to the project's coding standards a
 
 For any questions or inquiries about Sandesh, please contact Aditya Bhamare - adityabhamare71@gmail.com
 
+## Media
+![Sandesh](https://github.com/adityabhamare10/ChatApplication/assets/108888187/7721bc0b-8369-43a0-a717-bde8b7b86b4e)
+
+
